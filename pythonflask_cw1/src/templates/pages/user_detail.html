@@ -1,0 +1,47 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Repository detail{% endblock %}
+{% block content %}
+    <div class="well">
+        <h1 id="title"></h1>
+        <hr>
+        <div class="row" style="width:40%">
+            <div class="col-lg-6">
+                <img id="avatar" style="width: 100%;">
+            </div>
+            <div class="col-lg-6">
+                <a id="ownerr"></a>
+                <p id="stats"></p>
+                <p id="location"></p>
+                <p id="bio"></p>
+                <div id="urls"></div>
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            url = 'https://api.github.com/users/{{ name }}';
+            requestJSON(url, function(data) {
+                $('#title').text('@' + data.login);
+
+                $('#ownerr').text(data.name);
+                $('#avatar').attr('src', data.avatar_url);
+
+
+                $('#ownerr').attr('href', data.html_url);
+
+                $('#stats').text('Public repos: ' + data.public_repos + ' - Public Gists: ' + data.public_gists + " - Followers: " + data.followers );
+                $('#location').text("Location: " + data.location);
+                $('#bio').text(data.bio);
+
+                url = '<a href="' + data.html_url+ '">github</a>';
+                blog = '<a href="' + data.blog+ '">blog</a>';
+
+                $('#urls').append(url +" ").append(blog);
+            });
+
+        });
+
+    </script>
+{% endblock %}
+

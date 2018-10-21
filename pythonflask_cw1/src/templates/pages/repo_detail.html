@@ -1,0 +1,39 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Repository detail{% endblock %}
+{% block content %}
+    <div class="well">
+        <h1 id="title"></h1>
+        <hr>
+        <a id="ownerr"></a>
+        <p id="stats"></p>
+        <p id="language"></p>
+        <blockquote>
+            <p id="desc"></p>
+        </blockquote>
+        <div id="urls"></div>
+
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            url = 'https://api.github.com/repos/{{ owner }}/{{ repo }}';
+            requestJSON(url, function(data) {
+                $('#title').text(data.name);
+                $('#ownerr').text(data.owner.login);
+                $('#ownerr').attr('href', data.owner.url);
+
+                $('#stats').text('Forks: ' + data.forks_count + ' - Watchers: ' + data.watchers + " - Stars: " + data.stargazers_count );
+                $('#language').text("Language: " + data.language);
+                $('#desc').text(data.description);
+
+                url = '<a href="' + data.html_url+ '">url</a>';
+                git = '<a href="' + data.git_url+ '">git</a>';
+                homepage = '<a href="' + data.homepage+ '">homepage</a>';
+
+                $('#urls').append(url +" ").append(git + " ").append(homepage);
+            });
+
+        });
+
+    </script>
+{% endblock %}
+
